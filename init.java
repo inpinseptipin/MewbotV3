@@ -1,11 +1,16 @@
-import javax.swing.*;  
+import javax.swing.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;  
 class youtube
 {  
   public static JLabel H1()
   {
     JLabel h;
     h=new JLabel("Welcome to MewBot");
-    h.setBounds(200,250,150,100);
+    h.setBounds(200,0,300,100);
+    h.setFont(new Font("Courier New", Font.BOLD, 20));
+    h.setForeground(Color.BLUE);
     return h;
   }
 
@@ -21,7 +26,7 @@ class youtube
     f.setVisible(true);          
     f.add(h1);
     f.add(b);//adding button in JFrame            
-    f.setSize(400,500);//400 width and 500 height  
+    f.setSize(600,700);//600 width and 800 height  
     f.setLayout(null);//using no layout managers  
     f.setVisible(true);//making the frame visible  
   }  
