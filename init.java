@@ -26,8 +26,8 @@ public class init extends Application {
     {  
               
 
-        l1=init_Label("AyyLmao",0,-275);
-        l1.setFont(new Font("Arial", 30));  
+        l1=init_Label("Welcome to MewBot",0,-275);
+        l1.setFont(new Font("Arial", 30));  //label Font
 
         StackPane root = new StackPane();  
 
@@ -36,7 +36,7 @@ public class init extends Application {
 
         root.getChildren().add(l1);  
         primaryStage.setScene(scene);  
-        primaryStage.setTitle("Youtube To Mp3");  
+        primaryStage.setTitle("MewBot.exe");  
         primaryStage.show();  
           
     }
