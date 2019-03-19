@@ -16,7 +16,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;  
 import javafx.scene.text.FontWeight; 
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;  
   
 public class init extends Application
@@ -61,14 +60,14 @@ public class init extends Application
                
         b1=init_Button("Click me",0,0);
         
-        HBox hbox = new HBox(t1,b1);
         FileInputStream input = new FileInputStream("C:/Users/Lenovo/Desktop/MewBot.exe/background1.jpg");
         Image i = new Image(input);
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
-        hbox.setBackground(bg);
-
-        StackPane root = new StackPane(hbox);              
+        
+        StackPane root = new StackPane();
+        root.setBackground(bg);
+                      
         Scene scene = new Scene(root,800,600);  
 
         root.getChildren().add(b1);
