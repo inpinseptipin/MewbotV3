@@ -1,20 +1,28 @@
-import javafx.application.Application;
+import javafx.application.Application; 
+import javafx.scene.control.*; 
+import javafx.scene.layout.*; 
+import javafx.event.ActionEvent; 
+import javafx.event.EventHandler; 
+import javafx.scene.canvas.*; 
+import javafx.scene.web.*; 
+import javafx.scene.layout.*; 
+import javafx.scene.image.*; 
+import java.io.*; 
+import javafx.geometry.*; 
 import javafx.scene.Group;  
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;  
 import javafx.scene.text.FontPosture;  
-import javafx.scene.text.FontWeight;   
-import javafx.scene.control.Label;
+import javafx.scene.text.FontWeight; 
 import javafx.scene.paint.Color;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;  
   
 public class init extends Application
 {  
   
+    static Image i;
     static Text t1;
     static Label l1;
     static Button b1;    
@@ -43,27 +51,32 @@ public class init extends Application
         return b;
     }
 
-    @Override  
+    @Override                                                                
+
     public void start(Stage primaryStage) throws Exception
     {
         t1=init_Text("Welcome to MewBot",0,-275);
         t1.setFont(Font.font("Chocolate Dealer",45));
-        t1.setFill(Color.BLACK);
-        t1.setStroke(Color.BLACK);
-        t1.setStrokeWidth(1);       
+        t1.setFill(Color.WHITE);
+               
         b1=init_Button("Click me",0,0);
+        
+        HBox hbox = new HBox(t1,b1);
+        FileInputStream input = new FileInputStream("C:/Users/Lenovo/Desktop/MewBot.exe/backgrond.jpg");
+        Image i = new Image(input);
+        BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
+        Background bg = new Background(bgi);
+        hbox.setBackground(bg);
 
-        StackPane root = new StackPane();  
-        Scene scene=new Scene(root,800,600);  
+        StackPane root = new StackPane(hbox);              
+        Scene scene = new Scene(root,800,600);  
 
         root.getChildren().add(b1);
-        root.getChildren().add(t1);  
-        primaryStage.setScene(scene);  
+        root.getChildren().add(t1);
         primaryStage.setTitle("MewBot.exe");  
+        primaryStage.setScene(scene);    
         primaryStage.show();  
     }
-
-
 
     public static void main(String[] args) 
     {  
