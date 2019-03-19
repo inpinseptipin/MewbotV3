@@ -38,16 +38,16 @@ public class init extends Application
     public void start(Stage primaryStage) throws Exception
     {
         DropShadow dropShadow = new DropShadow();
-        String style =  "-fx-background-color:black;" +
+        String style =  "-fx-background-color:red;" +
                 "-fx-background-radius:10;" +
-                "-fx-font: 16px \"Microsoft YaHei\";" +
+                "-fx-font: 16px \"Welcome to Mewbot\";" +
                 "-fx-text-fill:white;-fx-padding:10;";
         l1=init_Label("Welcome to Mewbot",0,-275);
         l1.setStyle(style);
         dropShadow.setBlurType(BlurType.THREE_PASS_BOX);
-        dropShadow.setWidth(40);
-        dropShadow.setHeight(40);
-        dropShadow.setRadius(19.5);
+        dropShadow.setWidth(60);
+        dropShadow.setHeight(60);
+        dropShadow.setRadius(30);
         dropShadow.setOffsetX(0);
         dropShadow.setOffsetY(00);
         dropShadow.setColor(Color.color(0, 0, 0));
@@ -55,7 +55,7 @@ public class init extends Application
         
         b1=init_Button("Click me",0,0);
 
-        l1.setFont(new Font("Comic Sans MS", 30)); 
+        l1.setFont(new Font("Comic Sans MS",30)); 
 
 
 
