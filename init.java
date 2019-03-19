@@ -1,19 +1,21 @@
-import javafx.application.Application;  
-import javafx.scene.Scene;  
-import javafx.scene.control.Label;  
-
+import javafx.application.Application;
+import javafx.scene.Group;  
+import javafx.scene.Scene;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow; 
+import javafx.scene.effect.Shadow;  
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;  
-
-import javafx.scene.text.Font;  
-
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;  
   
-public class init extends Application {  
+public class init extends Application
+{  
   
     
     static Label l1;
-    static Label l2;
     static Button b1;    
 
     public Label init_Label(String title,int x,int y)
@@ -32,22 +34,28 @@ public class init extends Application {
         return b;
     }
 
-
     @Override  
     public void start(Stage primaryStage) throws Exception
-    {  
-              
-
-
-        l1=init_Label("Welcome to MewBot",0,-275);
-        l1.setFont(new Font("Arial", 30));  //label Font
-
-
-        l1=init_Label("AyyLmao",0,-275);  
+    {
+        DropShadow dropShadow = new DropShadow();
+        String style =  "-fx-background-color:black;" +
+                "-fx-background-radius:10;" +
+                "-fx-font: 16px \"Microsoft YaHei\";" +
+                "-fx-text-fill:white;-fx-padding:10;";
+        l1=init_Label("Welcome to Mewbot",0,-275);
+        l1.setStyle(style);
+        dropShadow.setBlurType(BlurType.THREE_PASS_BOX);
+        dropShadow.setWidth(40);
+        dropShadow.setHeight(40);
+        dropShadow.setRadius(19.5);
+        dropShadow.setOffsetX(0);
+        dropShadow.setOffsetY(00);
+        dropShadow.setColor(Color.color(0, 0, 0));
+        l1.setEffect(dropShadow);  
         
         b1=init_Button("Click me",0,0);
 
-        l1.setFont(new Font("Arial", 30));  
+        l1.setFont(new Font("Comic Sans MS", 30)); 
 
 
 
@@ -61,14 +69,12 @@ public class init extends Application {
         primaryStage.setScene(scene);  
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.show();  
-          
     }
 
 
 
-
-
-    public static void main(String[] args) {  
+    public static void main(String[] args) 
+    {  
         launch(args);  
     }  
 }
