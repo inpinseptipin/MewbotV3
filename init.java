@@ -57,12 +57,12 @@ public class init extends Application
     {
         t1=init_Text("Welcome to MewBot",0,-275);
         t1.setFont(Font.font("Chocolate Dealer",45));
-        t1.setFill(Color.WHITE);
+        t1.setFill(Color.RED);
                
         b1=init_Button("Click me",0,0);
         
         HBox hbox = new HBox(t1,b1);
-        FileInputStream input = new FileInputStream("C:/Users/Lenovo/Desktop/MewBot.exe/backgrond.jpg");
+        FileInputStream input = new FileInputStream("C:/Users/Lenovo/Desktop/MewBot.exe/background1.jpg");
         Image i = new Image(input);
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
