@@ -7,23 +7,40 @@ import javafx.stage.Stage;
 public class init extends Application {  
   
     
-    
     static Label l1;
     static Label l2;
+    
+
+    public Label init_Label(String title,int x,int y)
+    {
+        Label l=new Label(title);
+        l.setTranslateX(x);
+        l.setTranslateY(y);
+        return l;
+    }
+
 
     @Override  
     public void start(Stage primaryStage) throws Exception
     {  
-        // TODO Auto-generated method stub  
-        l1=new Label("Welcome to MewBot");  
-        StackPane root = new StackPane();   
-        Scene scene=new Scene(root,300,300);  
+              
+
+        l1=init_Label("AyyLmao",0,-275);  
+
+        StackPane root = new StackPane();  
+
+
+        Scene scene=new Scene(root,800,600);  
+
         root.getChildren().add(l1);  
         primaryStage.setScene(scene);  
         primaryStage.setTitle("Youtube To Mp3");  
         primaryStage.show();  
           
     }
+
+
+
 
 
     public static void main(String[] args) {  
