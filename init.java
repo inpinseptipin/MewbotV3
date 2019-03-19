@@ -1,8 +1,12 @@
 import javafx.application.Application;  
 import javafx.scene.Scene;  
 import javafx.scene.control.Label;  
+
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;  
+
+import javafx.scene.text.Font;  
+
 import javafx.stage.Stage;  
   
 public class init extends Application {  
@@ -34,9 +38,13 @@ public class init extends Application {
     {  
               
 
+
         l1=init_Label("AyyLmao",0,-275);  
         
         b1=init_Button("Click me",0,0);
+
+        l1.setFont(new Font("Arial", 30));  
+
 
         StackPane root = new StackPane();  
 
