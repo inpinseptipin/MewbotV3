@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 import javafx.scene.canvas.*; 
 import javafx.scene.web.*; 
-import javafx.scene.layout.*; 
 import javafx.scene.image.*; 
 import java.io.*; 
 import javafx.geometry.*; 
