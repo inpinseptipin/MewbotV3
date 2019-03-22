@@ -5,10 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler; 
 import javafx.scene.canvas.*; 
 import javafx.scene.web.*; 
-import javafx.scene.layout.*; 
 import javafx.scene.image.*; 
 import java.io.*; 
-import javafx.geometry.*; 
+import javafx.geometry.*;
+import javafx.scene.media.Media;  
+import javafx.scene.media.MediaPlayer;  
+import javafx.scene.media.MediaView; 
 import javafx.scene.Group;  
 import javafx.scene.Scene;
 import javafx.scene.text.Text;
@@ -60,8 +62,7 @@ public class init extends Application
                
         b1=init_Button("Click me",0,0);
         
-        FileInputStream input = new FileInputStream("C:/Users/Lenovo/Desktop/MewBot.exe/background1.jpg");
-        Image i = new Image(input);
+        Image i = new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN7Ha2N3HEO7nhFKxXx0FRveuWwKh1uyVcPs5Q0Dmg7p3orC7ngw");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
