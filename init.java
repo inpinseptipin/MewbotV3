@@ -62,7 +62,7 @@ public class init extends Application
                
         b1=init_Button("Click me",0,0);
         
-        Image i = new Image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN7Ha2N3HEO7nhFKxXx0FRveuWwKh1uyVcPs5Q0Dmg7p3orC7ngw");
+        Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
