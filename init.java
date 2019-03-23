@@ -25,6 +25,7 @@ public class init extends Application
   
     static Image i;
     static Text t1;
+    static Text t2;
     static Label l1;
     static Button b1;    
 
@@ -67,10 +68,9 @@ public class init extends Application
         Background bg = new Background(bgi);
         
         StackPane root = new StackPane();
-        root.setBackground(bg);
-                      
-        Scene scene = new Scene(root,800,600);  
-
+        
+        Scene scene = new Scene(root,800,600);
+        
         root.getChildren().add(b1);
         root.getChildren().add(t1);
         primaryStage.setTitle("MewBot.exe");  
