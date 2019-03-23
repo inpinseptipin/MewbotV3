@@ -67,7 +67,7 @@ public class init extends Application
         Background bg = new Background(bgi);
         
         StackPane root = new StackPane();
-        root.setBackground(bg);
+       	root.setBackground(bg);
                       
         Scene scene = new Scene(root,800,600);  
 
