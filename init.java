@@ -23,6 +23,9 @@ import javafx.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
+import javafx.scene.control.Alert.AlertType;
+
+
   
 public class init extends Application
 {  
@@ -68,7 +71,36 @@ public class init extends Application
         }
     };
 
-    
+    public static void net_check() throws IOException 
+	{
+		try
+		{
+			
+			Process proc=Runtime.getRuntime().exec("ping www.geeksforgeeks.org");
+			int x=proc.waitFor();
+			if(x==0)
+			{
+				System.out.println("Connection Established");
+			}
+			else
+			{
+				Alert alert_1=new Alert(AlertType.ERROR);
+				alert_1.setTitle("Error Dialog");
+				alert_1.setHeaderText("Error");
+				alert_1.setContentText("No Internet Connection Detected");
+				alert_1.showAndWait();
+				System.exit(1);
+			}
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}	
+		catch(InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
     @Override                                                                
 
@@ -88,8 +120,11 @@ public class init extends Application
 
        	root.setBackground(bg);
                       
+        
         Scene scene = new Scene(root,800,600);  
+       
 
+        
         
 
         b1.setOnAction(event);
@@ -101,6 +136,7 @@ public class init extends Application
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
+         net_check();
     }
 
     public static void main(String[] args) 
@@ -154,3 +190,4 @@ class Runnable_1 implements Runnable
 
 
 }
+
