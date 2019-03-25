@@ -25,6 +25,6 @@ else:
 	os.chdir('songs')
 # Download Songs
 with youtube_dl.YoutubeDL(download_option) as dl:
-	with open('../' + argv[1], 'r') as f:
+	with open(argv[1], 'r') as f:
 		for song_url in f:
 			dl.download([song_url])

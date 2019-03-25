@@ -19,6 +19,10 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight; 
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;  
+import javafx.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
   
 public class init extends Application
 {  
@@ -53,6 +57,47 @@ public class init extends Application
         return b;
     }
 
+    public void run_script()
+    {
+        Boolean flag=true;
+        try
+        { 
+            // Command to create an external process 
+            
+            String line;
+  
+            // Running the above command 
+            
+            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
+            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
+            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
+
+            while((line=bri.readLine())!=null)
+            {
+                System.out.println(line);
+            }
+            bri.close();
+
+            while((line=bre.readLine())!=null)
+            {            
+                System.out.println(line);
+            }
+            bre.close();
+            
+            System.out.println("Done");
+
+        } 
+  
+        catch (IOException e) 
+        { 
+            e.printStackTrace(); 
+            System.out.println("In exception");
+            flag=false;
+        } 
+
+
+    }
+
     @Override                                                                
 
     public void start(Stage primaryStage) throws Exception
@@ -73,7 +118,15 @@ public class init extends Application
                       
         Scene scene = new Scene(root,800,600);  
 
+        EventHandler<ActionEvent> event= new EventHandler<ActionEvent>()
+        {
+            public void handle(ActionEvent e)
+            {
+                run_script();
+            }
+        };
 
+        b1.setOnAction(event);
      
         
 
