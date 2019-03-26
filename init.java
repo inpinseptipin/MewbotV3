@@ -76,7 +76,7 @@ public class init extends Application
 		try
 		{
 			
-			Process proc=Runtime.getRuntime().exec("ping www.geeksforgeeks.org");
+			Process proc=Runtime.getRuntime().exec("ping 8.8.8.8");
 			int x=proc.waitFor();
 			if(x==0)
 			{
