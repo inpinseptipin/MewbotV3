@@ -8,6 +8,8 @@ import javafx.scene.web.*;
 import javafx.scene.image.*; 
 import java.io.*; 
 import javafx.geometry.*;
+import java.awt.Component;
+import javafx.scene.control.TextArea;
 import javafx.scene.media.Media;  
 import javafx.scene.media.MediaPlayer;  
 import javafx.scene.media.MediaView; 
@@ -24,9 +26,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import javafx.scene.control.Alert.AlertType;
-import java.awt.*;
-
-
+import javafx.scene.control.TextArea;
   
 public class init extends Application
 {  
@@ -35,16 +35,17 @@ public class init extends Application
     static Text t1;
     static Text t2;
     static Label l1;
-    static Button b1;    
-    static TextArea area;
+    static Button b1;
+    static TextArea ta;    
 
-    public TextArea init_TextArea(String title,int x, int y,int w, int h)
+    public TextArea init_TextArea(int x, int y, int w,int h)
     {
-        TextArea t=new TextArea();
-        t.setBounds(x,y,h,w);
+        TextArea t = new TextArea();
+        t.setTranslateX(x);
+        t.setTranslateY(y);
+        t.setPrefSize(h,w);
         return t;
     }
-
     public Text init_Text(String title, int x, int y)
     {
         Text t=new Text(title);
@@ -96,7 +97,7 @@ public class init extends Application
 				Alert alert_1=new Alert(AlertType.ERROR);
 				alert_1.setTitle("Error Dialog");
 				alert_1.setHeaderText("Error");
-				alert_1.setContentText("No Internet Connection Detected");
+				alert_1.setContentText("Oooops!!! Your are not connected to the Internet");
 				alert_1.showAndWait();
 				System.exit(1);
 			}
@@ -118,9 +119,9 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",0,-275);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
-        area=init_TextArea(150,200,100,50);       
-        b1=init_Button("Download and Convert",0,0);
-        
+        b1=init_Button("Download File",0,0);
+        ta=init_TextArea(0,20,10,10);
+
         Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
@@ -130,18 +131,11 @@ public class init extends Application
        	root.setBackground(bg);              
         Scene scene = new Scene(root,800,600);  
 
-        
-
-        
-        
-
         b1.setOnAction(event);
      
-        
-
         root.getChildren().add(b1);
         root.getChildren().add(t1);
-        root.getChildren().add(area);
+        root.getChildren().add(ta);
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
