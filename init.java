@@ -38,12 +38,13 @@ public class init extends Application
     static Button b1;
     static TextArea ta;    
 
-    public TextArea init_TextArea(int x, int y, int w,int h)
+    public TextField init_TextField(int x, int y, int h)
     {
-        TextArea t = new TextArea();
+        TextField t = new TextField();
         t.setTranslateX(x);
         t.setTranslateY(y);
-        t.setPrefSize(h,w);
+        t.setPrefColumnCount(h);
+        
         return t;
     }
     public Text init_Text(String title, int x, int y)
@@ -116,26 +117,28 @@ public class init extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
-        t1=init_Text("Welcome to MewBot",0,-275);
+        t1=init_Text("Welcome to MewBot",185,0);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
-        b1=init_Button("Download File",0,0);
-        ta=init_TextArea(0,20,10,10);
+        b1=init_Button("Convert and Download",185,200);
+        TextField tf1=init_TextField(250,250,5);
 
         Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
         StackPane root = new StackPane();
+        TilePane root_1=new TilePane();
 
-       	root.setBackground(bg);              
-        Scene scene = new Scene(root,800,600);  
+       	root_1.setBackground(bg);              
+        Scene scene = new Scene(root_1,800,600);  
 
         b1.setOnAction(event);
      
-        root.getChildren().add(b1);
-        root.getChildren().add(t1);
-        root.getChildren().add(ta);
+        root_1.getChildren().add(b1);
+        root_1.getChildren().add(t1);
+        root_1.getChildren().add(tf1);
+        
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
