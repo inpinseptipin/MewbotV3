@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
 import javafx.scene.control.Alert.AlertType;
+import java.awt.*;
 
 
   
@@ -35,6 +36,14 @@ public class init extends Application
     static Text t2;
     static Label l1;
     static Button b1;    
+    static TextArea area;
+
+    public TextArea init_TextArea(String title,int x, int y,int w, int h)
+    {
+        TextArea t=new TextArea();
+        t.setBounds(x,y,h,w);
+        return t;
+    }
 
     public Text init_Text(String title, int x, int y)
     {
@@ -109,7 +118,7 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",0,-275);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
-               
+        area=init_TextArea(150,200,100,50);       
         b1=init_Button("Download and Convert",0,0);
         
         Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
@@ -118,11 +127,10 @@ public class init extends Application
         
         StackPane root = new StackPane();
 
-       	root.setBackground(bg);
-                      
-        
+       	root.setBackground(bg);              
         Scene scene = new Scene(root,800,600);  
-       
+
+        
 
         
         
@@ -133,6 +141,7 @@ public class init extends Application
 
         root.getChildren().add(b1);
         root.getChildren().add(t1);
+        root.getChildren().add(area);
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
