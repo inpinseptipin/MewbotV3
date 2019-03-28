@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 import java.io.InputStream;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
   
 public class init extends Application
 {  
@@ -36,15 +38,17 @@ public class init extends Application
     static Text t2;
     static Label l1;
     static Button b1;
-    static TextArea ta;    
+    static Button b2;
+    static TextField tf1;    
+    static String url;
 
-    public TextField init_TextField(int x, int y, int h)
+    public TextField init_TextField(String title,int x, int y, int h)
     {
         TextField t = new TextField();
+        t.setText(title);
         t.setTranslateX(x);
         t.setTranslateY(y);
         t.setPrefColumnCount(h);
-        
         return t;
     }
     public Text init_Text(String title, int x, int y)
@@ -71,7 +75,7 @@ public class init extends Application
         return b;
     }
 
-    EventHandler<ActionEvent> event= new EventHandler<ActionEvent>()
+    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>()
     {
         public void handle(ActionEvent e)
         {
@@ -80,6 +84,39 @@ public class init extends Application
            t_1.start();
             
         }
+    };
+
+    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()
+    {
+    	public void handle(ActionEvent e)
+    	{
+    		url=tf1.getText();
+    		try
+    		{
+    			FileWriter f1=new FileWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt",true);
+    			BufferedWriter bf1=new BufferedWriter(f1);
+    			bf1.write(url);
+    			bf1.newLine();
+    			bf1.close();
+
+    			Alert alert=new Alert(AlertType.CONFIRMATION);
+    			alert.setTitle("Success");
+    			alert.setContentText("Url Successfully Added to the Queue");
+    			alert.showAndWait();
+    			System.out.println(url);
+    			tf1.setText("");	
+    		}
+    		catch(Exception f)
+    		{
+    			Alert alert=new Alert(AlertType.ERROR);
+    			alert.setTitle("Failure");
+    			alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
+    			alert.showAndWait();
+    			f.printStackTrace();
+    		}
+    		
+
+    	}
     };
 
     public static void net_check() throws IOException 
@@ -120,8 +157,11 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",185,0);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
+
         b1=init_Button("Convert and Download",185,200);
-        TextField tf1=init_TextField(250,250,5);
+        b2=init_Button("Add Url to the Download Queue",185,450);
+
+     	tf1=init_TextField("enter Url Here",250,250,5);
 
         Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
@@ -133,9 +173,13 @@ public class init extends Application
        	root_1.setBackground(bg);              
         Scene scene = new Scene(root_1,800,600);  
 
-        b1.setOnAction(event);
+        b1.setOnAction(download);
+        b2.setOnAction(get_url);
+      
+
      
         root_1.getChildren().add(b1);
+        root_1.getChildren().add(b2);
         root_1.getChildren().add(t1);
         root_1.getChildren().add(tf1);
         
