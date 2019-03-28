@@ -29,6 +29,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
+import javafx.concurrent.Task;
+import javafx.application.Platform;
+
+
+
   
 public class init extends Application
 {  
@@ -36,11 +41,22 @@ public class init extends Application
     static Image i;
     static Text t1;
     static Text t2;
+   	
     static Label l1;
     static Button b1;
     static Button b2;
+    static Button b3;
     static TextField tf1;    
     static String url;
+
+    public static Text t3;
+
+
+    public init()
+    {
+    	t3=init_Text("HELLO",185,175);
+
+    }
 
     public TextField init_TextField(String title,int x, int y, int h)
     {
@@ -75,13 +91,87 @@ public class init extends Application
         return b;
     }
 
+    EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>()
+    {
+    	public void handle(ActionEvent e)	
+    	{
+    		new Thread()
+    		{    			    			
+	    		public void run() 
+	    		{
+	    			
+			        try
+			        { 
+			                    
+			            String line;                   
+			            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
+			            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
+			            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
+
+			            while((line=bri.readLine())!=null)
+			            {
+			                System.out.println(line);
+			       			  
+			                t3.setText(line);
+			                Thread.sleep(300); 
+			                
+			            }
+			            bri.close();
+
+			            while((line=bre.readLine())!=null)
+			            {            
+			                System.out.println(line);
+			                
+			                t3.setText(line);
+			                Thread.sleep(1000);
+			            }
+			            bre.close();
+			            
+			            System.out.println("Done");
+
+			        } 
+			        catch (IOException e) 
+			        { 
+			            e.printStackTrace(); 
+			            System.out.println("In exception");
+			            
+			        } 
+			        catch(InterruptedException k)
+			        {
+			        	System.out.println("Thread interrupted");
+			        }
+
+			        Platform.runLater(new Runnable()
+			        {
+			        	public void run()
+			        	{
+			        		
+			        	}
+			        });
+			    }
+	    	}.start();
+	    }	
+    };
+    
+    
+    	
+
+    
+
     EventHandler<ActionEvent> download= new EventHandler<ActionEvent>()
     {
         public void handle(ActionEvent e)
         {
+           String line;
+
            Runnable_1 r_1=new Runnable_1();
            Thread t_1=new Thread(r_1);
            t_1.start();
+           
+           
+           		t3.setText(r_1.retvar());
+           
+         
             
         }
     };
@@ -105,6 +195,7 @@ public class init extends Application
     			alert.showAndWait();
     			System.out.println(url);
     			tf1.setText("");	
+
     		}
     		catch(Exception f)
     		{
@@ -157,12 +248,14 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",185,0);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
+        t3=init_Text("HELLO",185,175);
 
         b1=init_Button("Convert and Download",185,200);
         b2=init_Button("Add Url to the Download Queue",185,450);
-
+        b3=init_Button("Download",185,220);
      	tf1=init_TextField("enter Url Here",250,250,5);
 
+     	
         Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
@@ -173,16 +266,21 @@ public class init extends Application
        	root_1.setBackground(bg);              
         Scene scene = new Scene(root_1,800,600);  
 
+      
+      
         b1.setOnAction(download);
         b2.setOnAction(get_url);
-      
-
+        b3.setOnAction(download1);
      
         root_1.getChildren().add(b1);
         root_1.getChildren().add(b2);
         root_1.getChildren().add(t1);
         root_1.getChildren().add(tf1);
-        
+        root_1.getChildren().add(t3);
+        root_1.getChildren().add(b3);
+       
+
+
         primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
@@ -193,23 +291,34 @@ public class init extends Application
     {  
         launch(args);  
     }  
-}
+};
 
 class Runnable_1 implements Runnable
 {
-	private int var;
-
+	public String var;
+	init t=new init();
 	public Runnable_1()
 	{
-		this.var=0;
+		this.var="";
 	}
 
-	public  void run()
+	public String retvar()
+	{
+		return var;
+	}
+
+	public void in(String line)
+	{
+		var=line;
+	}
+
+	
+	public void run()
     {
         Boolean flag=true;
         try
         { 
-                       
+                    
             String line;                   
             Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
             BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
@@ -218,12 +327,19 @@ class Runnable_1 implements Runnable
             while((line=bri.readLine())!=null)
             {
                 System.out.println(line);
+       			in(line);   
+                t.t3.setText(line);
+                Thread.sleep(300); 
+                
             }
             bri.close();
 
             while((line=bre.readLine())!=null)
             {            
                 System.out.println(line);
+                in(line);
+                t.t3.setText(line);
+                Thread.sleep(1000);
             }
             bre.close();
             
@@ -236,8 +352,11 @@ class Runnable_1 implements Runnable
             System.out.println("In exception");
             flag=false;
         } 
+        catch(InterruptedException k)
+        {
+        	System.out.println("Thread interrupted");
+        }
     }
 
-
-}
+};
 
