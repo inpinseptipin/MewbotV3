@@ -32,6 +32,8 @@ import java.io.FileReader;
 import java.io.BufferedWriter;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 
@@ -49,6 +51,7 @@ public class init extends Application
     static Button b3;
     static TextField tf1;    
     static String url;
+    static Alert a1;
 
     public static Text t3;
 
@@ -130,16 +133,10 @@ public class init extends Application
 	    		public void run() 
 	    		{
 	    			Boolean flag=false;
-	    			
-	    			
-	    			
 				        try
 				        { 
 				    		                
-				            if(net_check())
-	    					{	
-	    						System.exit(1);
-	    					}
+				            
 
 				            String line; 
 				                              
@@ -149,35 +146,18 @@ public class init extends Application
 
 				            while((line=bri.readLine())!=null)
 				            {
-				                System.out.println(line);
-				       			  
+				                
 				                t3.setText(line);
-				                Thread.sleep(300); 
+				                Thread.sleep(100); 
 				                
 				            }
 				            bri.close();
 
 				            while((line=bre.readLine())!=null)
 				            {            
-				                if(net_check())
-				                {
-				                	Alert alert_1=new Alert(AlertType.ERROR);
-									alert_1.setTitle("Error Dialog");
-									alert_1.setHeaderText("MewBot.exe Has to Terminate");
-									alert_1.setContentText("Your are not connected to the Internet");
-									alert_1.showAndWait();
-				                }
-				                else
-				                {
-				                	Alert alert=new Alert(AlertType.ERROR);
-				                	alert.setTitle("Error Dialog");
-				                	alert.setHeaderText("Download Terminated");
-				                	alert.setContentText("URL INVALID");
-				                	alert.showAndWait(); 
-
-				                }
 				                
-				                Thread.sleep(1000);
+				                
+				                Thread.sleep(100);
 				            }
 				            bre.close();
 	 
@@ -192,15 +172,28 @@ public class init extends Application
 				        {
 				        	System.out.println("Thread interrupted");
 				        }
-				    
-
-
+				   
 
 			        Platform.runLater(new Runnable()
 			        {
 			        	public void run()
 			        	{
-			        		
+			        		try
+			        		{
+			        			if(net_check())
+			        			{
+			        				a1=new Alert(AlertType.ERROR);
+			        				a1.setHeaderText("Lost Net Connectivity");
+			        				a1.setContentText("Please Restart the Application");
+			        				
+			        				System.exit(1);
+
+			        			}
+			        		}
+			        		catch(Exception e)
+			        		{
+
+			        		}	
 			        	}
 			        });
 			    }
@@ -264,43 +257,32 @@ public class init extends Application
 
     public static Boolean net_check() throws IOException // INTERNET CONNECTION CHECKER
 	{
-		Boolean flag;
+		Boolean flag=false;
 		try
 		{
 			
-			Process proc=Runtime.getRuntime().exec("ping 8.8.8.8");
-			int x=proc.waitFor();
-			if(x==0)
-			{
-				System.out.println("Connection Established");
-				flag=false;
-			}
-			else 
-			{
-				Alert alert_1=new Alert(AlertType.ERROR);
-				alert_1.setTitle("Error Dialog");
-				alert_1.setHeaderText("MewBot.exe Has to Terminate");
-				alert_1.setContentText("Your are not connected to the Internet");
-				alert_1.showAndWait();
-				flag=true;
-				
-			}
+			URL url=new URL("https://www.google.com");
+			URLConnection con=url.openConnection();
+			con.connect();
+			Alert alert=new Alert(AlertType.CONFIRMATION);
+			alert.setHeaderText("Welcome to Mewbot");
+			alert.setContentText("Your Doorway to being illegal");
+			alert.showAndWait();
+			System.out.println("Connected Successfully");			
+			
 			
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
-			Alert alert=new Alert(AlertType.ERROR);
-			alert.setTitle("I/O Interruption");
-			alert.setHeaderText("MewBot.exe has to Terminate");
-			alert.setContentText("Application will terminate");
-			alert.showAndWait();
+			Alert alert_1=new Alert(AlertType.ERROR);
+			alert_1.setTitle("Error Dialog");
+			alert_1.setHeaderText("MewBot.exe Has to Terminate");
+			alert_1.setContentText("Your are not connected to the Internet");
+			alert_1.showAndWait();
 			flag=true;
+			
 		}	
-		catch(InterruptedException e)
-		{
-			e.printStackTrace();
-			flag=true;
-		}
+		
 		return flag;
 	}
 
