@@ -28,6 +28,7 @@ import java.io.InputStream;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextArea;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.BufferedWriter;
 import javafx.concurrent.Task;
 import javafx.application.Platform;
@@ -91,10 +92,11 @@ public class init extends Application
         return b;
     }
 
-    EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>()
+    EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Now using Download Function
     {
     	public void handle(ActionEvent e)	
     	{
+    		
     		new Thread()
     		{    			    			
 	    		public void run() 
@@ -103,7 +105,9 @@ public class init extends Application
 			        try
 			        { 
 			                    
-			            String line;                   
+			            net_check();
+			            String line; 
+			                              
 			            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
 			            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 			            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
@@ -122,10 +126,30 @@ public class init extends Application
 			            {            
 			                System.out.println(line);
 			                
-			                t3.setText(line);
+			                t3.setText("URL NOT VALID");
 			                Thread.sleep(1000);
 			            }
 			            bre.close();
+ 
+			            File file=new File("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+				    	if(file.delete())
+				    	{
+				    		try
+				    		{
+				    			System.out.println("File Successfully Deleted");
+				    			PrintWriter writer=new PrintWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+
+				    			writer.close();			
+				    		}
+				    		catch(IOException g)
+				    		{
+				    			g.printStackTrace();
+				    		}
+			  			}
+			  			else
+			  			{
+			  			System.out.println("File Failed to Delete");
+			  			}
 			            
 			            System.out.println("Done");
 
@@ -141,6 +165,8 @@ public class init extends Application
 			        	System.out.println("Thread interrupted");
 			        }
 
+
+
 			        Platform.runLater(new Runnable()
 			        {
 			        	public void run()
@@ -150,6 +176,8 @@ public class init extends Application
 			        });
 			    }
 	    	}.start();
+
+	    	
 	    }	
     };
     
@@ -158,7 +186,7 @@ public class init extends Application
 
     
 
-    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>()
+    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() // Old Download Button
     {
         public void handle(ActionEvent e)
         {
@@ -176,7 +204,7 @@ public class init extends Application
         }
     };
 
-    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()
+    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()  // TextField to URL
     {
     	public void handle(ActionEvent e)
     	{
@@ -226,7 +254,7 @@ public class init extends Application
 				Alert alert_1=new Alert(AlertType.ERROR);
 				alert_1.setTitle("Error Dialog");
 				alert_1.setHeaderText("Error");
-				alert_1.setContentText("Oooops!!! Your are not connected to the Internet");
+				alert_1.setContentText("Your are not connected to the Internet");
 				alert_1.showAndWait();
 				System.exit(1);
 			}
@@ -293,7 +321,7 @@ public class init extends Application
     }  
 };
 
-class Runnable_1 implements Runnable
+class Runnable_1 implements Runnable // Class Running Old Download Button
 {
 	public String var;
 	init t=new init();
@@ -327,7 +355,7 @@ class Runnable_1 implements Runnable
             while((line=bri.readLine())!=null)
             {
                 System.out.println(line);
-       			in(line);   
+       			   
                 t.t3.setText(line);
                 Thread.sleep(300); 
                 
@@ -337,7 +365,7 @@ class Runnable_1 implements Runnable
             while((line=bre.readLine())!=null)
             {            
                 System.out.println(line);
-                in(line);
+                
                 t.t3.setText(line);
                 Thread.sleep(1000);
             }
