@@ -273,14 +273,17 @@ public class init extends Application
 
     public void start(Stage primaryStage) throws Exception
     {
-        t1=init_Text("Welcome to MewBot",185,0);
+        t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
-        t3=init_Text("",185,125);
+        
+        t3=init_Text("Download on the Go",400,27);
+        t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
+        t3.setFill(Color.ORANGE);
 
         //b1=init_Button("Convert and Download",185,200);
-        b2=init_Button("Add Url to the Download Queue",185,450);
-        b3=init_Button("Download",180,0);
+        b2=init_Button("Add Url to the Download Queue",300,150);
+        b3=init_Button("Download",300,150);
      	tf1=init_TextField("enter Url Here",250,250,5);
 
      	
@@ -289,7 +292,7 @@ public class init extends Application
         Background bg = new Background(bgi);
         
         StackPane root = new StackPane();
-        TilePane root_1=new TilePane();
+        GridPane root_1=new GridPane();
 
        	root_1.setBackground(bg);              
         Scene scene = new Scene(root_1,800,600);  
