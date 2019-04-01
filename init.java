@@ -59,7 +59,7 @@ public class init extends Application
 
     }
 
-    public TextField init_TextField(String title,int x, int y, int h)
+    public TextField init_TextField(String title,int x, int y, int h) //TextField INITIALIZER
     {
         TextField t = new TextField();
         t.setText(title);
@@ -68,7 +68,7 @@ public class init extends Application
         t.setPrefColumnCount(h);
         return t;
     }
-    public Text init_Text(String title, int x, int y)
+    public Text init_Text(String title, int x, int y) //TEXT INITALIZER
     {
         Text t=new Text(title);
         t.setTranslateX(x);
@@ -76,7 +76,7 @@ public class init extends Application
         return t; 
     }
  
-    public Label init_Label(String title,int x,int y)
+    public Label init_Label(String title,int x,int y)//LABEL INITIALIZER
     {
         Label l=new Label(title);
         l.setTranslateX(x);
@@ -84,7 +84,7 @@ public class init extends Application
         return l;
     }
 
-    public Button init_Button(String title,int x,int y)
+    public Button init_Button(String title,int x,int y)//BUTTON INITIALIZER
     {
         Button b=new Button(title);
         b.setTranslateX(x);
@@ -92,7 +92,35 @@ public class init extends Application
         return b;
     }
 
-    EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Now using Download Function
+
+    public Boolean del_music()//Clear Download Queue
+    {
+    	Boolean flag=false;
+    	File file=new File("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+		if(file.delete())
+		{
+			try
+			{
+				System.out.println("File Successfully Deleted");
+				PrintWriter writer=new PrintWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+				writer.close();		
+				flag=true;	
+			}
+			catch(IOException g)
+			{
+				g.printStackTrace();
+			}
+			
+		}
+		else
+		{
+			System.out.println("File Failed to Delete");
+
+		}	
+		return flag;		      			         
+    }
+
+    EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Download Function
     {
     	public void handle(ActionEvent e)	
     	{
@@ -101,69 +129,70 @@ public class init extends Application
     		{    			    			
 	    		public void run() 
 	    		{
+	    			Boolean flag=false;
 	    			
-			        try
-			        { 
-			                    
-			            net_check();
-			            String line; 
-			                              
-			            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
-			            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
-			            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
+	    			
+	    			
+				        try
+				        { 
+				    		                
+				            if(net_check())
+	    					{	
+	    						System.exit(1);
+	    					}
 
-			            while((line=bri.readLine())!=null)
-			            {
-			                System.out.println(line);
-			       			  
-			                t3.setText(line);
-			                Thread.sleep(300); 
-			                
-			            }
-			            bri.close();
+				            String line; 
+				                              
+				            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
+				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
+				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
-			            while((line=bre.readLine())!=null)
-			            {            
-			                System.out.println(line);
-			                
-			                t3.setText("URL NOT VALID");
-			                Thread.sleep(1000);
-			            }
-			            bre.close();
- 
-			            File file=new File("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
-				    	if(file.delete())
-				    	{
-				    		try
-				    		{
-				    			System.out.println("File Successfully Deleted");
-				    			PrintWriter writer=new PrintWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+				            while((line=bri.readLine())!=null)
+				            {
+				                System.out.println(line);
+				       			  
+				                t3.setText(line);
+				                Thread.sleep(300); 
+				                
+				            }
+				            bri.close();
 
-				    			writer.close();			
-				    		}
-				    		catch(IOException g)
-				    		{
-				    			g.printStackTrace();
-				    		}
-			  			}
-			  			else
-			  			{
-			  			System.out.println("File Failed to Delete");
-			  			}
-			            
-			            System.out.println("Done");
+				            while((line=bre.readLine())!=null)
+				            {            
+				                if(net_check())
+				                {
+				                	Alert alert_1=new Alert(AlertType.ERROR);
+									alert_1.setTitle("Error Dialog");
+									alert_1.setHeaderText("MewBot.exe Has to Terminate");
+									alert_1.setContentText("Your are not connected to the Internet");
+									alert_1.showAndWait();
+				                }
+				                else
+				                {
+				                	Alert alert=new Alert(AlertType.ERROR);
+				                	alert.setTitle("Error Dialog");
+				                	alert.setHeaderText("Download Terminated");
+				                	alert.setContentText("URL INVALID");
+				                	alert.showAndWait(); 
 
-			        } 
-			        catch (IOException e) 
-			        { 
-			            e.printStackTrace(); 
-			            System.out.println("In exception");
-			            
-			        } 
-			        catch(InterruptedException k)
-			        {
-			        	System.out.println("Thread interrupted");
-			        }
+				                }
+				                
+				                Thread.sleep(1000);
+				            }
+				            bre.close();
+	 
+				        }   
+				        catch (IOException e) 
+				        { 
+				             
+				            System.out.println("In exception");
+				            
+				        } 
+				        catch(InterruptedException k)
+				        {
+				        	System.out.println("Thread interrupted");
+				        }
+				    
 
 
 
@@ -181,12 +210,7 @@ public class init extends Application
 	    }	
     };
     
-    
-    	
-
-    
-
-    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() // Old Download Button
+    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() // Old Download Function
     {
         public void handle(ActionEvent e)
         {
@@ -204,7 +228,7 @@ public class init extends Application
         }
     };
 
-    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()  // TextField to URL
+    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()  // URL INSERTER
     {
     	public void handle(ActionEvent e)
     	{
@@ -238,8 +262,9 @@ public class init extends Application
     	}
     };
 
-    public static void net_check() throws IOException 
+    public static Boolean net_check() throws IOException // INTERNET CONNECTION CHECKER
 	{
+		Boolean flag;
 		try
 		{
 			
@@ -248,42 +273,52 @@ public class init extends Application
 			if(x==0)
 			{
 				System.out.println("Connection Established");
+				flag=false;
 			}
-			else
+			else 
 			{
 				Alert alert_1=new Alert(AlertType.ERROR);
 				alert_1.setTitle("Error Dialog");
-				alert_1.setHeaderText("Error");
+				alert_1.setHeaderText("MewBot.exe Has to Terminate");
 				alert_1.setContentText("Your are not connected to the Internet");
 				alert_1.showAndWait();
-				System.exit(1);
+				flag=true;
+				
 			}
+			
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			Alert alert=new Alert(AlertType.ERROR);
+			alert.setTitle("I/O Interruption");
+			alert.setHeaderText("MewBot.exe has to Terminate");
+			alert.setContentText("Application will terminate");
+			alert.showAndWait();
+			flag=true;
 		}	
 		catch(InterruptedException e)
 		{
 			e.printStackTrace();
+			flag=true;
 		}
+		return flag;
 	}
 
     @Override                                                                
 
-    public void start(Stage primaryStage) throws Exception
+    public void start(Stage primaryStage) throws Exception // GUI
     {
         t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
         
-        t3=init_Text("Download on the Go",400,27);
+        t3=init_Text("Another Generic Downloader",350,80);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
-        t3.setFill(Color.ORANGE);
+        t3.setFill(Color.BLUE);
 
         //b1=init_Button("Convert and Download",185,200);
-        b2=init_Button("Add Url to the Download Queue",300,150);
-        b3=init_Button("Download",300,150);
+        b2=init_Button("Add Url to the Download Queue",350,350);
+        b3=init_Button("Download",700,250);
      	tf1=init_TextField("enter Url Here",250,250,5);
 
      	
@@ -310,18 +345,35 @@ public class init extends Application
         root_1.getChildren().add(t3);
         root_1.getChildren().add(b3);
        
-
-
-        primaryStage.setTitle("MewBot.exe");  
+		if(net_check()==true)
+		{
+			System.exit(1);
+		}        
+		primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
-         net_check();
+        
     }
 
     public static void main(String[] args) 
     {  
         launch(args);  
     }  
+
+    public void will_run() throws IOException
+    {
+    	try
+    	{
+    		if(net_check())
+    		{
+    			System.exit(1);
+    		}
+    	}
+    	catch(IOException e)
+    	{
+    		e.printStackTrace();
+    	}	
+    }
 };
 
 class Runnable_1 implements Runnable // Class Running Old Download Button
