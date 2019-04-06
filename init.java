@@ -99,13 +99,13 @@ public class init extends Application
     public Boolean del_music()//Clear Download Queue
     {
     	Boolean flag=false;
-    	File file=new File("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+    	File file=new File("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt");
 		if(file.delete())
 		{
 			try
 			{
 				System.out.println("File Successfully Deleted");
-				PrintWriter writer=new PrintWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt");
+				PrintWriter writer=new PrintWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt");
 				writer.close();		
 				flag=true;	
 			}
@@ -140,7 +140,7 @@ public class init extends Application
 
 				            String line; 
 				                              
-				            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
+				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
 				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
@@ -228,7 +228,7 @@ public class init extends Application
     		url=tf1.getText();
     		try
     		{
-    			FileWriter f1=new FileWriter("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt",true);
+    			FileWriter f1=new FileWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt",true);
     			BufferedWriter bf1=new BufferedWriter(f1);
     			bf1.write(url);
     			bf1.newLine();
@@ -385,7 +385,7 @@ class Runnable_1 implements Runnable // Class Running Old Download Button
         { 
                     
             String line;                   
-            Process proc_1 = new ProcessBuilder("C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\ripper.exe","C:\\Users\\arsen\\Desktop\\MewBot.exe\\build\\Bin\\music.txt").start();; 
+            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
             BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
             BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
