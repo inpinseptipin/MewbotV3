@@ -34,7 +34,7 @@ import javafx.concurrent.Task;
 import javafx.application.Platform;
 import java.net.URL;
 import java.net.URLConnection;
-
+import javafx.scene.control.ProgressBar;
 
 
   
@@ -44,7 +44,6 @@ public class init extends Application
     static Image i;
     static Text t1;
     static Text t2;
-   	
     static Label l1;
     static Button b1;
     static Button b2;
@@ -52,8 +51,9 @@ public class init extends Application
     static TextField tf1;    
     static String url;
     static Alert a1;
-
     public static Text t3;
+    static ProgressBar p1;
+    static String line_1;
 
 
     public init()
@@ -62,7 +62,8 @@ public class init extends Application
 
     }
 
-    public TextField init_TextField(String title,int x, int y, int h) //TextField INITIALIZER
+    //TextField INITIALIZER
+    public TextField init_TextField(String title,int x, int y, int h) 
     {
         TextField t = new TextField();
         t.setText(title);
@@ -71,7 +72,9 @@ public class init extends Application
         t.setPrefColumnCount(h);
         return t;
     }
-    public Text init_Text(String title, int x, int y) //TEXT INITALIZER
+
+    //TEXT INITALIZER
+    public Text init_Text(String title, int x, int y) 
     {
         Text t=new Text(title);
         t.setTranslateX(x);
@@ -79,7 +82,8 @@ public class init extends Application
         return t; 
     }
  
-    public Label init_Label(String title,int x,int y)//LABEL INITIALIZER
+    //LABEL INITIALIZER
+    public Label init_Label(String title,int x,int y)
     {
         Label l=new Label(title);
         l.setTranslateX(x);
@@ -87,7 +91,8 @@ public class init extends Application
         return l;
     }
 
-    public Button init_Button(String title,int x,int y)//BUTTON INITIALIZER
+    //BUTTON INITIALIZER
+    public Button init_Button(String title,int x,int y)
     {
         Button b=new Button(title);
         b.setTranslateX(x);
@@ -95,8 +100,43 @@ public class init extends Application
         return b;
     }
 
+    public Double download_progress(String line)
+    {
+        if(line.matches("(.*)10(.*)"))
+            return 0.1;
 
-    public Boolean del_music()//Clear Download Queue
+        else if(line.matches("(.*)20(.*)"))
+            return 0.2;
+
+        else if(line.matches("(.*)30(.*)"))
+            return 0.3;
+
+        else if(line.matches("(.*)40(.*)"))
+            return 0.4;
+
+        else if(line.matches("(.*)50(.*)"))
+            return 0.5;
+
+        else if(line.matches("(.*)60(.*)"))
+            return 0.6;
+
+        else if(line.matches("(.*)70(.*)"))
+            return 0.7;
+
+        else if(line.matches("(.*)80(.*)"))
+            return 0.8;
+
+        else if(line.matches("(.*)90(.*)"))
+            return 0.9;
+
+        else if(line.matches("(.*)100(.*)"))
+            return 1.0;
+        else
+            return 0.0;
+    }
+
+    //Clear Download Queue
+    public Boolean del_music()
     {
     	Boolean flag=false;
     	File file=new File("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt");
@@ -111,18 +151,19 @@ public class init extends Application
 			}
 			catch(IOException g)
 			{
-				g.printStackTrace();
+				flag=false;
 			}
 			
 		}
 		else
 		{
 			System.out.println("File Failed to Delete");
-
+            flag=false;
 		}	
 		return flag;		      			         
     }
 
+    //Download V_2
     EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Download Function
     {
     	public void handle(ActionEvent e)	
@@ -136,19 +177,18 @@ public class init extends Application
 				        try
 				        { 
 				    		                
-				            
-
-				            String line; 
-				                              
+				            String line;
+                            int progress;
+                                          
 				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
 				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
-				            while((line=bri.readLine())!=null)
+				            while((line_1=bri.readLine())!=null)
 				            {
-				                
-				                t3.setText(line);
-				                Thread.sleep(100); 
+				                p1.setProgress(download_progress(line_1));
+                                System.out.println(line_1);
+				                Thread.sleep(1000); 
 				                
 				            }
 				            bri.close();
@@ -156,7 +196,7 @@ public class init extends Application
 				            while((line=bre.readLine())!=null)
 				            {            
 				                
-				                
+				                System.out.println(line);
 				                Thread.sleep(100);
 				            }
 				            bre.close();
@@ -185,10 +225,8 @@ public class init extends Application
 			        				a1=new Alert(AlertType.ERROR);
 			        				a1.setHeaderText("Lost Net Connectivity");
 			        				a1.setContentText("Please Restart the Application");
-			        				
-			        				System.exit(1);
-
 			        			}
+                                
 			        		}
 			        		catch(Exception e)
 			        		{
@@ -203,7 +241,8 @@ public class init extends Application
 	    }	
     };
     
-    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() // Old Download Function
+    // Download V_1
+    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() 
     {
         public void handle(ActionEvent e)
         {
@@ -221,7 +260,31 @@ public class init extends Application
         }
     };
 
-    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()  // URL INSERTER
+    EventHandler<ActionEvent>clear_queue=new EventHandler<ActionEvent>()
+    {
+        public void handle(ActionEvent e)
+        {
+            Boolean flag=del_music();
+            if(flag)
+            {
+                Alert del_queue=new Alert(AlertType.CONFIRMATION);
+                del_queue.setTitle("Success");
+                del_queue.setContentText("Queue Cleared Successfully");
+                del_queue.showAndWait();
+            }
+            else
+            {
+                Alert del_queue=new Alert(AlertType.ERROR);
+                del_queue.setTitle("Failure");
+                del_queue.setContentText("Failed to clear the download queue");
+                del_queue.showAndWait();   
+            }
+        }
+    };
+
+    // URL INSERTER
+
+    EventHandler<ActionEvent> get_url=new EventHandler<ActionEvent>()  
     {
     	public void handle(ActionEvent e)
     	{
@@ -255,7 +318,8 @@ public class init extends Application
     	}
     };
 
-    public static Boolean net_check() throws IOException // INTERNET CONNECTION CHECKER
+    // INTERNET CONNECTION CHECKER
+    public static Boolean net_check() throws IOException 
 	{
 		Boolean flag=false;
 		try
@@ -264,22 +328,15 @@ public class init extends Application
 			URL url=new URL("https://www.google.com");
 			URLConnection con=url.openConnection();
 			con.connect();
-			Alert alert=new Alert(AlertType.CONFIRMATION);
-			alert.setHeaderText("Welcome to Mewbot");
-			alert.setContentText("Your Doorway to being illegal");
-			alert.showAndWait();
-			System.out.println("Connected Successfully");			
+            flag=true;
+					
 			
 			
 		}
 		catch(Exception e)
 		{
-			Alert alert_1=new Alert(AlertType.ERROR);
-			alert_1.setTitle("Error Dialog");
-			alert_1.setHeaderText("MewBot.exe Has to Terminate");
-			alert_1.setContentText("Your are not connected to the Internet");
-			alert_1.showAndWait();
-			flag=true;
+			
+			flag=false;
 			
 		}	
 		
@@ -293,12 +350,14 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.RED);
+        p1=new ProgressBar(0);  
+        p1.setProgress(0);  
         
         t3=init_Text("Another Generic Downloader",350,80);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
         t3.setFill(Color.BLUE);
 
-        //b1=init_Button("Convert and Download",185,200);
+        b1=init_Button("Clear Queue",250,300);
         b2=init_Button("Add Url to the Download Queue",350,350);
         b3=init_Button("Download",700,250);
      	tf1=init_TextField("enter Url Here",250,250,5);
@@ -308,28 +367,31 @@ public class init extends Application
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
-        StackPane root = new StackPane();
+       
         GridPane root_1=new GridPane();
+        Scene scene = new Scene(root_1,800,600);
+       
 
-       	root_1.setBackground(bg);              
-        Scene scene = new Scene(root_1,800,600);  
-
-      
-      
-        //b1.setOnAction(download);
+       	root_1.setBackground(bg);                    
+        b1.setOnAction(clear_queue);
         b2.setOnAction(get_url);
         b3.setOnAction(download1);
      
         
+        root_1.getChildren().add(b3);
         root_1.getChildren().add(b2);
+        root_1.getChildren().add(b1);
         root_1.getChildren().add(t1);
         root_1.getChildren().add(tf1);
         root_1.getChildren().add(t3);
-        root_1.getChildren().add(b3);
+        root_1.getChildren().add(p1);
+        
        
-		if(net_check()==true)
+		if(net_check())
 		{
-			System.exit(1);
+			Alert a=new Alert(AlertType.CONFIRMATION);
+            a.setTitle("Application Launched Successfully");
+            a.setContentText("Welcome to Mew");
 		}        
 		primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
