@@ -54,6 +54,7 @@ public class init extends Application
     public static Text t3;
     static ProgressBar p1;
     static String line_1;
+    static int mes_counter;
 
 
     public init()
@@ -63,13 +64,14 @@ public class init extends Application
     }
 
     //TextField INITIALIZER
-    public TextField init_TextField(String title,int x, int y, int h) 
+    public TextField init_TextField(String title,int x, int y, int h,int z) 
     {
         TextField t = new TextField();
         t.setText(title);
         t.setTranslateX(x);
         t.setTranslateY(y);
         t.setPrefColumnCount(h);
+        t.setPrefWidth(z);
         return t;
     }
 
@@ -100,39 +102,42 @@ public class init extends Application
         return b;
     }
 
+    public ProgressBar init_ProgressBar(int x, int y,int z)
+    {
+        ProgressBar p=new ProgressBar();
+        p.setProgress(0.0);
+        p.setTranslateX(x);
+        p.setTranslateY(y);
+        p.setPrefWidth(z);
+        return p;
+    }
+
     public Double download_progress(String line)
     {
-        if(line.matches("(.*)10(.*)"))
-            return 0.1;
-
-        else if(line.matches("(.*)20(.*)"))
-            return 0.2;
-
-        else if(line.matches("(.*)30(.*)"))
-            return 0.3;
-
-        else if(line.matches("(.*)40(.*)"))
-            return 0.4;
-
-        else if(line.matches("(.*)50(.*)"))
-            return 0.5;
-
-        else if(line.matches("(.*)60(.*)"))
-            return 0.6;
-
-        else if(line.matches("(.*)70(.*)"))
-            return 0.7;
-
-        else if(line.matches("(.*)80(.*)"))
-            return 0.8;
-
-        else if(line.matches("(.*)90(.*)"))
-            return 0.9;
-
-        else if(line.matches("(.*)100(.*)"))
-            return 1.0;
-        else
-            return 0.0;
+           
+        mes_counter++;
+        Double p=1.0;
+        String sub_line;
+        String value="";
+        if(mes_counter>=5)
+        {
+            sub_line=line.substring(0,15);
+            char[] characters=sub_line.toCharArray();
+            for(char ch:characters)
+            {
+                if(ch>=48 && ch<=57)
+                {
+                    value+=ch;
+                }
+            }
+            p=new Double(value);
+            p=p/100;
+            if(p==1.0)
+            {
+                mes_counter=0;
+            }
+        }   
+        return p; 
     }
 
     //Clear Download Queue
@@ -179,18 +184,17 @@ public class init extends Application
 				    		                
 				            String line;
                             int progress;
-                                          
+                            mes_counter=0;                                  
 				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
 				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
 				            while((line_1=bri.readLine())!=null)
 				            {
-				                p1.setProgress(download_progress(line_1));
-                                System.out.println(line_1);
-				                Thread.sleep(1000); 
-				                
-				            }
+                                p1.setProgress(download_progress(line_1));
+				                //System.out.println(download_progress(line_1));                               
+				            } 
+                            mes_counter=0;
 				            bri.close();
 
 				            while((line=bre.readLine())!=null)
@@ -349,21 +353,24 @@ public class init extends Application
     {
         t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
-        t1.setFill(Color.RED);
-        p1=new ProgressBar(0);  
-        p1.setProgress(0);  
+        t1.setFill(Color.web("#05ffcd"));
+       
+
+          
         
         t3=init_Text("Another Generic Downloader",350,80);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
-        t3.setFill(Color.BLUE);
+        t3.setFill(Color.web("#05ffcd"));
 
         b1=init_Button("Clear Queue",250,300);
         b2=init_Button("Add Url to the Download Queue",350,350);
-        b3=init_Button("Download",700,250);
-     	tf1=init_TextField("enter Url Here",250,250,5);
-
+        b3=init_Button("Download",620,250);
+        b3.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
+     	tf1=init_TextField("enter Url Here",0,250,3,600);
+        tf1.setFont(Font.font("Courier New",FontWeight.BOLD,16));
+        p1=init_ProgressBar(250,180,450);
      	
-        Image i = new Image("https://i0.wp.com/www.freepptbackgrounds.net/wp-content/uploads/2015/03/Listening-Music-Powerpoint-Templates.jpg?resize=806%2C605&ssl=1");
+        Image i = new Image("http://www.textures4photoshop.com/tex/thumbs/black-texture-background-high-res-thumb33.jpg");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
@@ -376,6 +383,8 @@ public class init extends Application
         b1.setOnAction(clear_queue);
         b2.setOnAction(get_url);
         b3.setOnAction(download1);
+
+        
      
         
         root_1.getChildren().add(b3);
