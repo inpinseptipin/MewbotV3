@@ -354,20 +354,20 @@ public class init extends Application
         t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.web("#05ffcd"));
-       
-
-          
-        
+                
         t3=init_Text("Another Generic Downloader",350,80);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
         t3.setFill(Color.web("#05ffcd"));
 
         b1=init_Button("Clear Queue",250,300);
         b2=init_Button("Add Url to the Download Queue",350,350);
+
         b3=init_Button("Download",620,250);
         b3.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
+
      	tf1=init_TextField("enter Url Here",0,250,3,600);
         tf1.setFont(Font.font("Courier New",FontWeight.BOLD,16));
+        
         p1=init_ProgressBar(250,180,450);
      	
         Image i = new Image("http://www.textures4photoshop.com/tex/thumbs/black-texture-background-high-res-thumb33.jpg");
