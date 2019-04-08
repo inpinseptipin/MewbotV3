@@ -1,4 +1,5 @@
-import javafx.application.Application; 
+import javafx.application.Application;
+import javafx.application.Platform; 
 import javafx.scene.control.*; 
 import javafx.scene.layout.*; 
 import javafx.event.ActionEvent; 
@@ -15,29 +16,28 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView; 
 import javafx.scene.Group;  
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox; 
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;  
 import javafx.scene.text.FontPosture;  
 import javafx.scene.text.FontWeight; 
 import javafx.scene.paint.Color;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;  
 import javafx.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TextArea;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedWriter;
 import javafx.concurrent.Task;
-import javafx.application.Platform;
 import java.net.URL;
 import java.net.URLConnection;
-import javafx.scene.control.ProgressBar;
 
-
-  
 public class init extends Application
 {  
   
@@ -402,20 +402,25 @@ public class init extends Application
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.web("#05ffcd"));
                 
-        t3=init_Text("Another Generic Downloader",310,30);
-        t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
+        t3=init_Text("Another Generic Downloader",315,35);
+        t3.setFont(Font.font("Rainbow Bridge Personal Use",18));
         t3.setFill(Color.web("#05ffcd"));
 
-        b1=init_Button("Clear Queue",250,300);
-        b2=init_Button("Add Url to the Download Queue",350,350);
+        b1=init_Button("Clear Queue",60,350);
+        b1.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
+
+        b2=init_Button("Add Url to the Download Queue",250,350);
+        b2.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
 
         b3=init_Button("Download",620,250);
         b3.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
 
-     	tf1=init_TextField("enter Url Here",0,250,3,600);
+     	tf1=init_TextField("Enter Url Here",10,250,0,0);
         tf1.setFont(Font.font("Courier New",FontWeight.BOLD,16));
 
-        p1=init_ProgressBar(250,180,450);
+        p1=init_ProgressBar(100,550,600);
+
+       
      	
         Image i = new Image("http://www.textures4photoshop.com/tex/thumbs/black-texture-background-high-res-thumb33.jpg");
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
@@ -434,11 +439,11 @@ public class init extends Application
         
      
         
+        root_1.getChildren().add(tf1);
         root_1.getChildren().add(b3);
         root_1.getChildren().add(b2);
         root_1.getChildren().add(b1);
         root_1.getChildren().add(t1);
-        root_1.getChildren().add(tf1);
         root_1.getChildren().add(t3);
         root_1.getChildren().add(p1);
         
