@@ -450,7 +450,7 @@ public class init extends Application
             a.setContentText("Welcome to Mew");
 		}        
 
-        del_last_queue();
+       
 		primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
