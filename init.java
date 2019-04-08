@@ -55,6 +55,7 @@ public class init extends Application
     static ProgressBar p1;
     static String line_1;
     static int mes_counter;
+    static long length;
 
 
     public init()
@@ -102,6 +103,7 @@ public class init extends Application
         return b;
     }
 
+    //PROGRESSBAR INITIALIZER
     public ProgressBar init_ProgressBar(int x, int y,int z)
     {
         ProgressBar p=new ProgressBar();
@@ -112,6 +114,7 @@ public class init extends Application
         return p;
     }
 
+    //SET_PROGRESS
     public Double download_progress(String line)
     {
            
@@ -168,6 +171,34 @@ public class init extends Application
 		return flag;		      			         
     }
 
+    public void del_last_queue()
+    {
+        try
+        {
+            
+            RandomAccessFile in = new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt", "rw");                                                      
+            long writePosition = in.getFilePointer();                            
+            in.readLine();                                                                                    
+            long readPosition = in.getFilePointer();                             
+
+            byte[] buff = new byte[1024];                                         
+            int n;                                                                
+            while (-1 != (n = in.read(buff))) {                                  
+                in.seek(writePosition);                                          
+                in.write(buff, 0, n);                                            
+                readPosition += n;                                                
+                writePosition += n;                                               
+                in.seek(readPosition);                                           
+            }                                                                     
+            in.setLength(writePosition);                                         
+            in.close();  
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     //Download V_2
     EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Download Function
     {
@@ -184,14 +215,20 @@ public class init extends Application
 				    		                
 				            String line;
                             int progress;
-                            mes_counter=0;                                  
+                            mes_counter=0; 
+                            Double f_down;                                 
 				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
 				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
 
 				            while((line_1=bri.readLine())!=null)
 				            {
-                                p1.setProgress(download_progress(line_1));
+                                f_down=download_progress(line_1);
+                                p1.setProgress(f_down);
+                                if(f_down==1.0)
+                                {
+                                    del_last_queue();
+                                }
 				                //System.out.println(download_progress(line_1));                               
 				            } 
                             mes_counter=0;
@@ -244,6 +281,8 @@ public class init extends Application
 	    	
 	    }	
     };
+
+
     
     // Download V_1
     EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() 
@@ -300,6 +339,14 @@ public class init extends Application
     			bf1.write(url);
     			bf1.newLine();
     			bf1.close();
+
+                RandomAccessFile in=new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt","rw");
+                length=in.length();
+                System.out.println("Length = "+length);
+                in.close();   
+        
+
+
 
     			Alert alert=new Alert(AlertType.CONFIRMATION);
     			alert.setTitle("Success");
@@ -367,7 +414,7 @@ public class init extends Application
 
      	tf1=init_TextField("enter Url Here",0,250,3,600);
         tf1.setFont(Font.font("Courier New",FontWeight.BOLD,16));
-        
+
         p1=init_ProgressBar(250,180,450);
      	
         Image i = new Image("http://www.textures4photoshop.com/tex/thumbs/black-texture-background-high-res-thumb33.jpg");
@@ -402,6 +449,8 @@ public class init extends Application
             a.setTitle("Application Launched Successfully");
             a.setContentText("Welcome to Mew");
 		}        
+
+        del_last_queue();
 		primaryStage.setTitle("MewBot.exe");  
         primaryStage.setScene(scene);    
         primaryStage.show();  
