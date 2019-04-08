@@ -102,6 +102,7 @@ public class init extends Application
         return b;
     }
 
+    //PROGRESSBAR INITIALIZER
     public ProgressBar init_ProgressBar(int x, int y,int z)
     {
         ProgressBar p=new ProgressBar();
@@ -355,7 +356,7 @@ public class init extends Application
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.web("#05ffcd"));
                 
-        t3=init_Text("Another Generic Downloader",350,80);
+        t3=init_Text("Another Generic Downloader",310,30);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",15));
         t3.setFill(Color.web("#05ffcd"));
 
