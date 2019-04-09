@@ -49,13 +49,14 @@ public class init extends Application
     static Button b2;
     static Button b3;
     static TextField tf1;    
-    static String url;
+    public static String url;
     static Alert a1;
     public static Text t3;
     static ProgressBar p1;
     static String line_1;
     static int mes_counter;
     static long length;
+    public static Boolean url_flag;
 
 
     public init()
@@ -283,7 +284,32 @@ public class init extends Application
     };
 
 
-    
+    public void check_url()
+    {
+        
+           
+                
+                try
+                {
+                    URL url_1=new URL(url);
+                    URLConnection con=url_1.openConnection();
+                    con.connect();
+                    url_flag=true;
+                }
+                catch(IOException e)
+                {
+                    url_flag=false;
+                }  
+                catch(NullPointerException f)
+                {
+                    url_flag=false;
+                } 
+
+
+            
+        
+    }
+
     // Download V_1
     EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() 
     {
@@ -332,40 +358,51 @@ public class init extends Application
     	public void handle(ActionEvent e)
     	{
     		url=tf1.getText();
-    		try
+            check_url();
+            if(url_flag)
     		{
-    			FileWriter f1=new FileWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt",true);
-    			BufferedWriter bf1=new BufferedWriter(f1);
-    			bf1.write(url);
-    			bf1.newLine();
-    			bf1.close();
+                try
+        		{
+        			FileWriter f1=new FileWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt",true);
+        			BufferedWriter bf1=new BufferedWriter(f1);
+        			bf1.write(url);
+        			bf1.newLine();
+        			bf1.close();
 
-                RandomAccessFile in=new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt","rw");
-                length=in.length();
-                System.out.println("Length = "+length);
-                in.close();   
-        
+                    RandomAccessFile in=new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt","rw");
+                    length=in.length();
+                    System.out.println("Length = "+length);
+                    in.close();   
+            
 
 
 
-    			Alert alert=new Alert(AlertType.CONFIRMATION);
-    			alert.setTitle("Success");
-    			alert.setContentText("Url Successfully Added to the Queue");
-    			alert.showAndWait();
-    			System.out.println(url);
-    			tf1.setText("");	
+        			Alert alert=new Alert(AlertType.CONFIRMATION);
+        			alert.setTitle("Success");
+        			alert.setContentText("Url Successfully Added to the Queue");
+        			alert.showAndWait();
+        			System.out.println(url);
+        			tf1.setText("");	
 
+        		}
+        		catch(Exception f)
+        		{
+        			Alert alert=new Alert(AlertType.ERROR);
+        			alert.setTitle("Failure");
+        			alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
+        			alert.showAndWait();
+        			f.printStackTrace();
+        		}
     		}
-    		catch(Exception f)
-    		{
-    			Alert alert=new Alert(AlertType.ERROR);
-    			alert.setTitle("Failure");
-    			alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
-    			alert.showAndWait();
-    			f.printStackTrace();
-    		}
-    		
 
+            else
+            {
+                Alert alert=new Alert(AlertType.ERROR);
+                alert.setTitle("Failure");
+                alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
+                alert.showAndWait();
+                
+            }
     	}
     };
 
@@ -421,8 +458,8 @@ public class init extends Application
         p1=init_ProgressBar(100,550,600);
 
        
-     	
-        Image i = new Image("http://www.textures4photoshop.com/tex/thumbs/black-texture-background-high-res-thumb33.jpg");
+     	FileInputStream input = new FileInputStream("C:/Program Files/Mewbot.exe/res/BG_3.jpg");
+        Image i = new Image(input);
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);
         
@@ -430,6 +467,24 @@ public class init extends Application
         GridPane root_1=new GridPane();
         Scene scene = new Scene(root_1,800,600);
        
+
+
+        if(net_check())
+        {
+            Alert a=new Alert(AlertType.CONFIRMATION);
+            a.setTitle("Application Launched Successfully");
+            a.setContentText("Welcome to MewBot.exe");
+            a.showAndWait();
+        }
+        else
+        {
+            Alert a=new Alert(AlertType.ERROR);
+            a.setTitle("Error Dialog");
+            a.setHeaderText("Mewbot.exe failed to launch");
+            a.setContentText("No Internet Connection Detected");
+            a.showAndWait();
+            System.exit(1);
+        }  
 
        	root_1.setBackground(bg);                    
         b1.setOnAction(clear_queue);
@@ -448,12 +503,7 @@ public class init extends Application
         root_1.getChildren().add(p1);
         
        
-		if(net_check())
-		{
-			Alert a=new Alert(AlertType.CONFIRMATION);
-            a.setTitle("Application Launched Successfully");
-            a.setContentText("Welcome to Mew");
-		}        
+
 
        
 		primaryStage.setTitle("MewBot.exe");  
