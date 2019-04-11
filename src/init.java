@@ -28,15 +28,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;  
 import javafx.event.ActionEvent;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.InputStream;
-import java.io.FileWriter;
-import java.io.FileReader;
-import java.io.BufferedWriter;
 import javafx.concurrent.Task;
-import java.net.URL;
-import java.net.URLConnection;
+import MewBot.Utilities;
+import MewBot.Internet;
 
 public class init extends Application
 {  
@@ -53,8 +47,6 @@ public class init extends Application
     static Alert a1;
     public static Text t3;
     static ProgressBar p1;
-    static String line_1;
-    static int mes_counter;
     static long length;
     public static Boolean url_flag;
 
@@ -115,90 +107,19 @@ public class init extends Application
         return p;
     }
 
-    //SET_PROGRESS
-    public Double download_progress(String line)
+    
+
+    public void Complete()
     {
-           
-        mes_counter++;
-        Double p=1.0;
-        String sub_line;
-        String value="";
-        if(mes_counter>=5)
-        {
-            sub_line=line.substring(0,15);
-            char[] characters=sub_line.toCharArray();
-            for(char ch:characters)
-            {
-                if(ch>=48 && ch<=57)
-                {
-                    value+=ch;
-                }
-            }
-            p=new Double(value);
-            p=p/100;
-            if(p==1.0)
-            {
-                mes_counter=0;
-            }
-        }   
-        return p; 
+        Alert a=new Alert(AlertType.CONFIRMATION);
+        a.setTitle("Download Complete");
+        a.setHeaderText("");
+        a.setContentText("");
+        a.showAndWait();
+
     }
 
-    //Clear Download Queue
-    public Boolean del_music()
-    {
-    	Boolean flag=false;
-    	File file=new File("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt");
-		if(file.delete())
-		{
-			try
-			{
-				System.out.println("File Successfully Deleted");
-				PrintWriter writer=new PrintWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt");
-				writer.close();		
-				flag=true;	
-			}
-			catch(IOException g)
-			{
-				flag=false;
-			}
-			
-		}
-		else
-		{
-			System.out.println("File Failed to Delete");
-            flag=false;
-		}	
-		return flag;		      			         
-    }
-
-    public void del_last_queue()
-    {
-        try
-        {
-            
-            RandomAccessFile in = new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt", "rw");                                                      
-            long writePosition = in.getFilePointer();                            
-            in.readLine();                                                                                    
-            long readPosition = in.getFilePointer();                             
-
-            byte[] buff = new byte[1024];                                         
-            int n;                                                                
-            while (-1 != (n = in.read(buff))) {                                  
-                in.seek(writePosition);                                          
-                in.write(buff, 0, n);                                            
-                readPosition += n;                                                
-                writePosition += n;                                               
-                in.seek(readPosition);                                           
-            }                                                                     
-            in.setLength(writePosition);                                         
-            in.close();  
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+    
 
     //Download V_2
     EventHandler<ActionEvent> download1=new EventHandler<ActionEvent>() // Download Function
@@ -211,35 +132,38 @@ public class init extends Application
 	    		public void run() 
 	    		{
 	    			Boolean flag=false;
+	    			Utilities util=new Utilities();
 				        try
 				        { 
 				    		                
-				            String line;
-                            int progress;
-                            mes_counter=0; 
+				            String line;                                                                                   
                             Double f_down;                                 
-				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
+				            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start(); 
 				            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
 				            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
+				            util.updateMes();
 
-				            while((line_1=bri.readLine())!=null)
+				            while((line=bri.readLine())!=null)
 				            {
-                                f_down=download_progress(line_1);
+                                f_down=util.downloadProgress(line);
                                 p1.setProgress(f_down);
                                 if(f_down==1.0)
                                 {
-                                    del_last_queue();
+                                    
+                                    Complete();
+                                    util.popQueue();
+
                                 }
 				                //System.out.println(download_progress(line_1));                               
 				            } 
-                            mes_counter=0;
+                            util.updateMes();
 				            bri.close();
 
 				            while((line=bre.readLine())!=null)
 				            {            
 				                
 				                System.out.println(line);
-				                Thread.sleep(100);
+				              
 				            }
 				            bre.close();
 	 
@@ -250,30 +174,23 @@ public class init extends Application
 				            System.out.println("In exception");
 				            
 				        } 
-				        catch(InterruptedException k)
+				        /*catch(InterruptedException k)
 				        {
 				        	System.out.println("Thread interrupted");
 				        }
+				        */
 				   
 
 			        Platform.runLater(new Runnable()
 			        {
 			        	public void run()
 			        	{
-			        		try
+			        		Internet i=new Internet();
+			        		Boolean flag=i.netCheck();
+			        		if(flag)
 			        		{
-			        			if(net_check())
-			        			{
-			        				a1=new Alert(AlertType.ERROR);
-			        				a1.setHeaderText("Lost Net Connectivity");
-			        				a1.setContentText("Please Restart the Application");
-			        			}
-                                
-			        		}
-			        		catch(Exception e)
-			        		{
-
-			        		}	
+			        			//Alert Box Needed here
+			        		}			        			
 			        	}
 			        });
 			    }
@@ -283,57 +200,13 @@ public class init extends Application
 	    }	
     };
 
-
-    public void check_url()
-    {
-        
-           
-                
-                try
-                {
-                    URL url_1=new URL(url);
-                    URLConnection con=url_1.openConnection();
-                    con.connect();
-                    url_flag=true;
-                }
-                catch(IOException e)
-                {
-                    url_flag=false;
-                }  
-                catch(NullPointerException f)
-                {
-                    url_flag=false;
-                } 
-
-
-            
-        
-    }
-
-    // Download V_1
-    EventHandler<ActionEvent> download= new EventHandler<ActionEvent>() 
-    {
-        public void handle(ActionEvent e)
-        {
-           String line;
-
-           Runnable_1 r_1=new Runnable_1();
-           Thread t_1=new Thread(r_1);
-           t_1.start();
-           
-           
-           		t3.setText(r_1.retvar());
-           
-         
-            
-        }
-    };
-
     EventHandler<ActionEvent>clear_queue=new EventHandler<ActionEvent>()
     {
         public void handle(ActionEvent e)
         {
-            Boolean flag=del_music();
+ 
+            Utilities util=new Utilities();
+            Boolean flag=util.deleteQueue();
             if(flag)
             {
                 Alert del_queue=new Alert(AlertType.CONFIRMATION);
@@ -357,9 +230,10 @@ public class init extends Application
     {
     	public void handle(ActionEvent e)
     	{
+    		Internet internet=new Internet();
     		url=tf1.getText();
-            check_url();
-            if(url_flag)
+            Boolean flag=internet.validUrl(url);
+            if(flag)
     		{
                 try
         		{
@@ -406,30 +280,7 @@ public class init extends Application
     	}
     };
 
-    // INTERNET CONNECTION CHECKER
-    public static Boolean net_check() throws IOException 
-	{
-		Boolean flag=false;
-		try
-		{
-			
-			URL url=new URL("https://www.google.com");
-			URLConnection con=url.openConnection();
-			con.connect();
-            flag=true;
-					
-			
-			
-		}
-		catch(Exception e)
-		{
-			
-			flag=false;
-			
-		}	
-		
-		return flag;
-	}
+    
 
     @Override                                                                
 
@@ -457,6 +308,8 @@ public class init extends Application
 
         p1=init_ProgressBar(100,550,600);
 
+        Internet internet=new Internet();
+
        
      	FileInputStream input = new FileInputStream("C:/Program Files/Mewbot.exe/res/BG_3.jpg");
         Image i = new Image(input);
@@ -469,7 +322,7 @@ public class init extends Application
        
 
 
-        if(net_check())
+        if(internet.netCheck())
         {
             Alert a=new Alert(AlertType.CONFIRMATION);
             a.setTitle("Application Launched Successfully");
@@ -517,86 +370,7 @@ public class init extends Application
         launch(args);  
     }  
 
-    public void will_run() throws IOException
-    {
-    	try
-    	{
-    		if(net_check())
-    		{
-    			System.exit(1);
-    		}
-    	}
-    	catch(IOException e)
-    	{
-    		e.printStackTrace();
-    	}	
-    }
+    
 };
 
-class Runnable_1 implements Runnable // Class Running Old Download Button
-{
-	public String var;
-	init t=new init();
-	public Runnable_1()
-	{
-		this.var="";
-	}
-
-	public String retvar()
-	{
-		return var;
-	}
-
-	public void in(String line)
-	{
-		var=line;
-	}
-
-	
-	public void run()
-    {
-        Boolean flag=true;
-        try
-        { 
-                    
-            String line;                   
-            Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start();; 
-            BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
-            BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
-
-            while((line=bri.readLine())!=null)
-            {
-                System.out.println(line);
-       			   
-                t.t3.setText(line);
-                Thread.sleep(300); 
-                
-            }
-            bri.close();
-
-            while((line=bre.readLine())!=null)
-            {            
-                System.out.println(line);
-                
-                t.t3.setText(line);
-                Thread.sleep(1000);
-            }
-            bre.close();
-            
-            System.out.println("Done");
-
-        } 
-        catch (IOException e) 
-        { 
-            e.printStackTrace(); 
-            System.out.println("In exception");
-            flag=false;
-        } 
-        catch(InterruptedException k)
-        {
-        	System.out.println("Thread interrupted");
-        }
-    }
-
-};
 
