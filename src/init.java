@@ -31,6 +31,11 @@ import javafx.event.ActionEvent;
 import javafx.concurrent.Task;
 import MewBot.Utilities;
 import MewBot.Internet;
+import MewBot.MessageBoxes;
+import MewBot.Search;
+import java.util.*;
+import javafx.collections.FXCollections;
+import javafx.collections.*;
 
 public class init extends Application
 {  
@@ -42,19 +47,34 @@ public class init extends Application
     static Button b1;
     static Button b2;
     static Button b3;
-    static TextField tf1;    
-    public static String url;
+    static Button b4_Search;
+    static TextField tf1;   
+    static TextField tf2; 
     static Alert a1;
     public static Text t3;
     static ProgressBar p1;
     static long length;
-    public static Boolean url_flag;
+    static ArrayList<String> youtubeTitles;
+    static ArrayList<String> youtubeUrls;
+    static Boolean downloadFlag;
+    static ComboBox<String> c1;
+   
 
 
-    public init()
+    public void initString()
     {
-    	
+    	youtubeTitles=new ArrayList<String>();
+    	youtubeUrls=new ArrayList<String>();
+    	downloadFlag=false;
+    }
 
+
+    public ComboBox<String> init_ComboBox(int x,int y)
+    {
+    	ComboBox<String> c=new ComboBox<>();
+    	c.setTranslateX(x);
+    	c.setTranslateY(y);
+    	return c;
     }
 
     //TextField INITIALIZER
@@ -111,12 +131,7 @@ public class init extends Application
 
     public void Complete()
     {
-        Alert a=new Alert(AlertType.CONFIRMATION);
-        a.setTitle("Download Complete");
-        a.setHeaderText("");
-        a.setContentText("");
-        a.showAndWait();
-
+        MessageBoxes m =new MessageBoxes("","","Download Complete",0);        
     }
 
     
@@ -209,20 +224,65 @@ public class init extends Application
             Boolean flag=util.deleteQueue();
             if(flag)
             {
-                Alert del_queue=new Alert(AlertType.CONFIRMATION);
-                del_queue.setTitle("Success");
-                del_queue.setContentText("Queue Cleared Successfully");
-                del_queue.showAndWait();
-            }
+                MessageBoxes m=new MessageBoxes("","Success","Queue Cleared Successfully",0);
+            }               
             else
             {
-                Alert del_queue=new Alert(AlertType.ERROR);
-                del_queue.setTitle("Failure");
-                del_queue.setContentText("Failed to clear the download queue");
-                del_queue.showAndWait();   
+                MessageBoxes m=new MessageBoxes("","Failure","Failed to Clear Download Queue",1);
+                   
             }
         }
     };
+
+    EventHandler<ActionEvent> search=new EventHandler<ActionEvent>()
+    {
+    	public void handle(ActionEvent e)
+    	{
+    		c1.getItems().clear();
+    		Boolean readUrlFlag=false;
+    		Utilities u=new Utilities();
+    		Search search=new Search();
+    		search.wipe();
+    		String searchString=tf2.getText();
+    		searchString=u.cleanString(searchString);
+
+    		
+    		search.cmd_command(searchString);
+    		System.out.println("Back");
+    		search.readUrl();
+
+    		
+    		if(readUrlFlag=search.readUrl())
+    		{
+    			youtubeTitles=search.top3Titles();
+    			youtubeUrls=search.top3Urls();
+    			System.out.println("Return Successful");
+    			addCombo();
+    		}
+    		else
+    		{
+    				System.out.println("Still Not Working Lmao");
+    		}
+    		
+            
+
+    		
+    		
+    		downloadFlag=true;
+
+
+    		search.dispUrl();
+    		
+    		
+
+    	}
+    };
+
+    public void addCombo()
+    {
+    	ObservableList<String> d1=FXCollections.observableArrayList(youtubeTitles);
+    	c1.getItems().addAll(youtubeTitles);  	
+    }
 
     // URL INSERTER
 
@@ -231,7 +291,7 @@ public class init extends Application
     	public void handle(ActionEvent e)
     	{
     		Internet internet=new Internet();
-    		url=tf1.getText();
+    		String url=tf1.getText();
             Boolean flag=internet.validUrl(url);
             if(flag)
     		{
@@ -251,45 +311,35 @@ public class init extends Application
 
 
 
-        			Alert alert=new Alert(AlertType.CONFIRMATION);
-        			alert.setTitle("Success");
-        			alert.setContentText("Url Successfully Added to the Queue");
-        			alert.showAndWait();
+        			MessageBoxes m1=new MessageBoxes("Success","Url Successfully Added to the Queue","",1);
+        			
         			System.out.println(url);
         			tf1.setText("");	
 
         		}
         		catch(Exception f)
         		{
-        			Alert alert=new Alert(AlertType.ERROR);
-        			alert.setTitle("Failure");
-        			alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
-        			alert.showAndWait();
+        			MessageBoxes m1=new MessageBoxes("Failure","Failed to add URL to the Download Queue","",2);
+        			
         			f.printStackTrace();
         		}
     		}
 
             else
             {
-                Alert alert=new Alert(AlertType.ERROR);
-                alert.setTitle("Failure");
-                alert.setContentText("Failed to Add Url to the Download Queue , Try Again");
-                alert.showAndWait();
-                
+                MessageBoxes m1=new MessageBoxes("Failure","Invalid URL , Try Again","BAD URL",2);
             }
     	}
     };
-
-    
 
     @Override                                                                
 
     public void start(Stage primaryStage) throws Exception // GUI
     {
+        
         t1=init_Text("Welcome to MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
-        t1.setFill(Color.web("#05ffcd"));
-                
+        t1.setFill(Color.web("#05ffcd"));       
         t3=init_Text("Another Generic Downloader",315,35);
         t3.setFont(Font.font("Rainbow Bridge Personal Use",18));
         t3.setFill(Color.web("#05ffcd"));
@@ -303,8 +353,21 @@ public class init extends Application
         b3=init_Button("Download",620,250);
         b3.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
 
+        b4_Search=init_Button("Search Song",620 ,450);
+        b4_Search.setFont(Font.font("Bookman Old Style",FontWeight.BOLD,16));
+
      	tf1=init_TextField("Enter Url Here",10,250,0,0);
         tf1.setFont(Font.font("Courier New",FontWeight.BOLD,16));
+
+        tf2=init_TextField("Enter Search Criteria",10,450,0,0);
+        tf2.setFont(Font.font("Courier New",FontWeight.BOLD,16));
+
+        c1=init_ComboBox(500,100);
+      
+        
+
+        
+
 
         p1=init_ProgressBar(100,550,600);
 
@@ -324,30 +387,31 @@ public class init extends Application
 
         if(internet.netCheck())
         {
-            Alert a=new Alert(AlertType.CONFIRMATION);
-            a.setTitle("Application Launched Successfully");
-            a.setContentText("Welcome to MewBot.exe");
-            a.showAndWait();
+            MessageBoxes m1=new MessageBoxes("Launched Successfully","Welcome to Mewbot","MEWBOT",0);
+            
         }
         else
         {
-            Alert a=new Alert(AlertType.ERROR);
-            a.setTitle("Error Dialog");
-            a.setHeaderText("Mewbot.exe failed to launch");
-            a.setContentText("No Internet Connection Detected");
-            a.showAndWait();
+            MessageBoxes m1=new MessageBoxes("Error Dialog","No Internet Connection","MewBot Failed to Launch",1);
+            
             System.exit(1);
         }  
+
+        initString();
 
        	root_1.setBackground(bg);                    
         b1.setOnAction(clear_queue);
         b2.setOnAction(get_url);
         b3.setOnAction(download1);
+        b4_Search.setOnAction(search);
 
         
      
         
         root_1.getChildren().add(tf1);
+        root_1.getChildren().add(tf2);
+        root_1.getChildren().add(c1);
+        root_1.getChildren().add(b4_Search);
         root_1.getChildren().add(b3);
         root_1.getChildren().add(b2);
         root_1.getChildren().add(b1);

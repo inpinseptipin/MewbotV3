@@ -20,7 +20,7 @@ public class Utilities
 	public Double downloadProgress(String line)
 	{
 		mesCounter++;
-	    Double p=1.0;
+	    Double p=0.0;
 	    String sub_line;
 	    String value="";
 	    if(mesCounter>=5)
@@ -106,10 +106,20 @@ public class Utilities
         return flag;
     }
 
-    
-
-
-
+    public String cleanString(String search)
+    {
+    	int count=1;
+    	for(int i=0;i<search.length();i++)
+    	{
+    		if(search.charAt(i)==32)
+    		{
+    			count++;
+    		}
+    	}
+    	String cString[]=search.split(" ",count);
+    	search=String.join("+",cString);
+    	return search;
+    }
 }
 
 
