@@ -36,6 +36,7 @@ import MewBot.Search;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.*;
+import javafx.scene.control.SelectionModel;
 
 public class init extends Application
 {  
@@ -58,6 +59,7 @@ public class init extends Application
     static ArrayList<String> youtubeUrls;
     static Boolean downloadFlag;
     static ComboBox<String> c1;
+    static Boolean downloadUrlFlag;
    
 
 
@@ -66,6 +68,7 @@ public class init extends Application
     	youtubeTitles=new ArrayList<String>();
     	youtubeUrls=new ArrayList<String>();
     	downloadFlag=false;
+        downloadUrlFlag=false;
     }
 
 
@@ -231,6 +234,8 @@ public class init extends Application
                 MessageBoxes m=new MessageBoxes("","Failure","Failed to Clear Download Queue",1);
                    
             }
+            //int id=c1.getSelectionModel().getSelectedIndex();
+            //System.out.println(id);
         }
     };
 
@@ -278,11 +283,27 @@ public class init extends Application
     	}
     };
 
+
+
+
     public void addCombo()
     {
     	ObservableList<String> d1=FXCollections.observableArrayList(youtubeTitles);
-    	c1.getItems().addAll(youtubeTitles);  	
+    	c1.getItems().addAll(youtubeTitles);  
+        tf1.setText("");	
     }
+
+
+    public String retchoiceUrl()
+    {
+        String url;
+        int id=c1.getSelectionModel().getSelectedIndex();
+        url=youtubeUrls.get(id);
+        return url;
+    }
+    
+
+     
 
     // URL INSERTER
 
@@ -290,8 +311,10 @@ public class init extends Application
     {
     	public void handle(ActionEvent e)
     	{
-    		Internet internet=new Internet();
-    		String url=tf1.getText();
+            
+            Internet internet=new Internet();
+    		//String url=tf1.getText();
+            String url=retchoiceUrl();
             Boolean flag=internet.validUrl(url);
             if(flag)
     		{
@@ -337,7 +360,7 @@ public class init extends Application
     public void start(Stage primaryStage) throws Exception // GUI
     {
         
-        t1=init_Text("Welcome to MewBot",255,10);
+        t1=init_Text("MewBot",255,10);
         t1.setFont(Font.font("Chocolate Dealer",45));
         t1.setFill(Color.web("#05ffcd"));       
         t3=init_Text("Another Generic Downloader",315,35);
@@ -362,7 +385,8 @@ public class init extends Application
         tf2=init_TextField("Enter Search Criteria",10,450,0,0);
         tf2.setFont(Font.font("Courier New",FontWeight.BOLD,16));
 
-        c1=init_ComboBox(500,100);
+        c1=init_ComboBox(10,100);
+        c1.setStyle("-fx-font: 12px \"Courier New\";");
       
         
 

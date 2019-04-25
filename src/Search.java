@@ -170,6 +170,7 @@ public class Search
 						count++;
 					
 					}	
+					openFile=false;
 				}
 				flag=true;
 			}
