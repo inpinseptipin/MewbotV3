@@ -73,6 +73,18 @@ public class Internet
 		return flag;
 	}
 
+	public Boolean isUrl(String line)
+	{
+		Boolean flag=false;
+		Pattern pattern=Pattern.compile("www.*");
+		Matcher m=pattern.matcher(line);
+		if(m.find())
+		{
+			flag=true;
+		}
+		return flag;
+	}
+
 
 
 

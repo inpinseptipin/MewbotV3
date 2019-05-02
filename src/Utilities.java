@@ -2,6 +2,7 @@ package MewBot;
 
 
 import java.io.*;
+import java.util.regex.*;
 
 
 
@@ -9,6 +10,7 @@ public class Utilities
 {
 	String Progress;
 	int mesCounter;
+	static int substringEnd;
 
 
 	public void updateMes()
@@ -16,22 +18,68 @@ public class Utilities
 		mesCounter=0;
 	}
 
+	public Utilities()
+	{
+		substringEnd=17;
+	}
 
 	public Double downloadProgress(String line)
 	{
 		mesCounter++;
-	    Double p=0.0;
-	    String sub_line;
+		Pattern pattern=Pattern.compile(" of");
+		Matcher m=pattern.matcher(line);
+		Double p=0.0;
+	    String sub_line="lel";
 	    String value="";
+	    Boolean flag=false;
 	    if(mesCounter>=5)
 	    {
-	        sub_line=line.substring(0,15);
+	    	if(m.find())
+			{	
+				sub_line=line.substring(0,m.start()-1);
+				char[] characters=sub_line.toCharArray();
+				for(char ch:characters)
+				{
+					if(ch>=48 && ch<=57)
+					{
+						value+=ch;
+					}
+				}
+				p=new Double(value);
+				p=p/1000;
+		
+				if(p==1.0)
+				{
+					mesCounter=0;
+				}
+			}	
+	    }
+		
+		
+
+	    
+	    /*if(mesCounter>=5)
+	    {
+	    	while(flag==false)
+	    	{
+	    		try
+	    		{
+	    			sub_line=line.substring(0,substringEnd);
+	    			flag=true;	
+	    		}
+	    		catch(StringIndexOutOfBoundsException f)
+	    		{
+	    			substringEnd--;
+	    			flag=false;
+	    		}	
+	    	}
 	        char[] characters=sub_line.toCharArray();
 	        for(char ch:characters)
 	        {
 	            if(ch>=48 && ch<=57)
 	            {
 	                value+=ch;
+	                System.out.println(ch);
 	            }
 	        }
 	            p=new Double(value);
@@ -40,7 +88,8 @@ public class Utilities
 	        {
 	            mesCounter=0;
 	        }
-	    }   
+	    } 
+	    */  
 	    return p; 
 	}
 

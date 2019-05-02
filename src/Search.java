@@ -79,23 +79,29 @@ public class Search
 		Boolean flag=false;
 
 		
-		
-
-		if(m.find())
+		try
 		{
-			
-			if(m1.find() && m2.find())
+			if(m.find())
 			{
-				System.out.println("Required Url Found");
-				href="https://www.youtube.com"+line.substring(m.start(),(m.start()+20));
-				title=line.substring((m1.start()+8),(m2.start()-16));
-				urls.put(title,href);
-				flag=true;
-				
-			}
+			
+				if(m1.find() && m2.find())
+				{
+					System.out.println("Required Url Found");
+					href="https://www.youtube.com"+line.substring(m.start(),(m.start()+20));
+					title=line.substring((m1.start()+8),(m2.start()-16));
+					urls.put(title,href);
+					flag=true;
+				}
 
 			//System.out.println(m.start()+" To "+m.end());
+			}		
 		}
+		catch(StringIndexOutOfBoundsException f)
+		{
+			flag=false;
+		}
+
+		
 		
 		return flag;
 	}
@@ -156,22 +162,13 @@ public class Search
 			{
 				
 				FileReader fin=new FileReader("C:\\Program Files\\mewbot.exe\\src\\urls.html");
-				System.out.println(fileCount + " Failed Attempts to Read File ");
-				System.out.println("File Opened Properly");
-				openFile=true;
-				if(openFile)
-				{
-					BufferedReader bri=new BufferedReader(fin);
-					while((line=bri.readLine())!=null)
-					{
-						//System.out.println(line);
-						
-						extract(line);
-						count++;
+				BufferedReader bri=new BufferedReader(fin);
+				while((line=bri.readLine())!=null)
+				{	
+					extract(line);
+					count++;
 					
-					}	
-					openFile=false;
-				}
+				}	
 				flag=true;
 			}
 			catch(IOException e)
@@ -180,7 +177,7 @@ public class Search
 				fileCount++;
 				openFile=false;
 				
-			}
+			}						
 		}		
 		return flag;
 	}
