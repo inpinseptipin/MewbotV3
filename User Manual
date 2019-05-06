@@ -18,11 +18,12 @@ Version 1.0 Release
 1. Type Song/Artist Name in the search bar , then click on "Search Song"
 2. Select from the choices from the box at the top of the window
 3. Click on Download to download the song.
+4. Downloaded Songs can be found in the folder "C:\\Program Files\\Mewbot.exe\\src\\songs"
 
 Alternative Use Case
 1. Enter Youtube URL in the search bar 
 2. Click on Download to download the song.
-
+3. Downloaded Songs can be found in the folder "C:\\Program Files\\Mewbot.exe\\src\\songs"
 
 
 
