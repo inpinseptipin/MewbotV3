@@ -1,0 +1,33 @@
+#Build Notes Version 1.0
+
+#User Interface
+1. User Interface has been simplified for more sleek and elegant view
+2. Single Text Box now accepts Song/Artist names , Lyrics and Url inputs
+3. Buttons for Searching and Download added in the Window.
+4. Progress Bar displays Accurate Download Progress on the UI Window
+
+#Input Validation
+1. Contains Input Validation Algorithm to rule out bad test cases and increase application reliability
+
+#MultiThreading
+1. Multithreading support has been added to improve overall performance.
+
+#Song Search
+1. Contains Online Search Algortihms that can search Song/Artist Names , lyrics etc.
+2. Search Results Now are Displayed on top of the UI Window.
+
+#Downloader
+1. Youtube Video's Audio can be downloaded
+2. Can Download any Song name selected by User from the choice box
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+#BUG FIXES AND IMPROVEMENTS
+1. Application Crashing after Song Download Completion
+2. Inaccurate Progress Display on the Window
+3. Application Crashing on Bad test cases such as invalid Urls
+4. Search Results were not Accurate for some user inputs
+
+
+
+
