@@ -198,7 +198,7 @@ public class init extends Application
                                        
                                 String line;                                                                                   
                                 Double f_down;                            
-                                Process proc_1 = new ProcessBuilder("C:\\Program Files\\mewbot.exe\\build\\bin\\ripper.exe","C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt").start(); 
+                                Process proc_1 = new ProcessBuilder("..\\build\\bin\\ripper.exe","..\\build\\bin\\music.txt").start(); 
                                 BufferedReader bri=new BufferedReader(new InputStreamReader(proc_1.getInputStream()));
                                 BufferedReader bre=new BufferedReader(new InputStreamReader(proc_1.getErrorStream()));
                                 util.updateMes();
@@ -335,13 +335,13 @@ public Boolean addUrl(String url)
     Boolean flag=false;
     try
     {
-        FileWriter f1=new FileWriter("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt",true);
+        FileWriter f1=new FileWriter("..\\build\\bin\\music.txt",true);
         BufferedWriter bf1=new BufferedWriter(f1);
         bf1.write(url);
         bf1.newLine();
         bf1.close();
 
-        RandomAccessFile in=new RandomAccessFile("C:\\Program Files\\mewbot.exe\\build\\bin\\music.txt","rw");
+        RandomAccessFile in=new RandomAccessFile("..\\build\\bin\\music.txt","rw");
         length=in.length();
         System.out.println("Length = "+length);
         in.close();          
@@ -393,7 +393,7 @@ public Boolean addUrl(String url)
         c1.setStyle("-fx-font: 12px \"Courier New\";");
         c1.setVisible(false);
 
-        FileInputStream input = new FileInputStream("C:/Program Files/Mewbot.exe/res/BG_3.jpg");
+        FileInputStream input = new FileInputStream("../res/BG_3.jpg");
         Image i = new Image(input);
         BackgroundImage bgi = new BackgroundImage(i,BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT,BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT); 
         Background bg = new Background(bgi);     

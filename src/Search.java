@@ -140,7 +140,7 @@ public class Search
 	public Boolean wipe()
 	{
 		Boolean flag=false;
-		File file=new File("C:\\Program Files\\mewbot.exe\\src\\urls.html");
+		File file=new File("urls.html");
 		if(file.delete())
 		{
 			flag=true;
@@ -161,7 +161,7 @@ public class Search
 			try
 			{
 				
-				FileReader fin=new FileReader("C:\\Program Files\\mewbot.exe\\src\\urls.html");
+				FileReader fin=new FileReader("urls.html");
 				BufferedReader bri=new BufferedReader(fin);
 				while((line=bri.readLine())!=null)
 				{	
